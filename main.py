@@ -2,7 +2,7 @@ from flask import Flask
 import os
 from init import db, ma, bcrypt, jwt
 from controllers.cli_controller import db_commands
-
+from controllers.user_controller import user_bp
 
 
 def create_app():
@@ -19,5 +19,11 @@ def create_app():
     jwt.init_app(app)
 
     app.register_blueprint(db_commands)  #direct the link to bp link
+    app.register_blueprint(user_bp)
+
+
+    # @app.route("/")
+    # def hello_world():
+    #     return "<p>Hello, World!</p>"
 
     return app
