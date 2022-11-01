@@ -1,6 +1,7 @@
+from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
-from flask import Blueprint
+
 
 
 
@@ -33,7 +34,8 @@ def seed_db():
             name='Becky L',
             email='BL@gmail.com',
             password=bcrypt.generate_password_hash('12345').decode('utf-8'),
-            address='1 Abc Street, Brisbane, 4000'
+            address='1 Abc Street, Brisbane, 4000',
+            phone= '0412123123'
         )
     ]
 

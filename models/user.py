@@ -12,4 +12,5 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)  #false mean cannot null, must write the email.   unique = only can register one
     password = db.Column(db.String, nullable=False)
     address = db.Column(db.String, nullable=False)
+    phone = db.Column(db.Integer)
     admin = db.Column(db.Boolean, default=False)   #admin had authorization, so no default.
