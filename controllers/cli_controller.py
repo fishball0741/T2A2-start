@@ -1,6 +1,7 @@
 from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
+from models.product import Product
 
 
 
@@ -41,4 +42,37 @@ def seed_db():
 
     db.session.add_all(users)
     db.session.commit()
+
+    products = [
+        Product(
+            categories= 'Food',
+            name= 'Royal Canin Gravy Wet Food',
+            description= '85g x 12packs, Gravy is tailor made to support the nutritional needs of your growing kitten.',
+            price= '30'
+        ),
+        Product(
+            categories= 'Toy',
+            name= 'Elevtronic Floppy Fish',
+            description= 'This toy is a great way to encourage your cat or dogs natural urge to play.',
+            status= 'Out of stock',
+            price= '12'
+        ),
+        Product(
+            categories= 'Litter',
+            name= 'Pidan Tofu Cat Litter',
+            description= '2.4kg, Comprised of tofu, this litter is the perfect eco-friendly, sustainable, fast clumping, super absorbent option for indoor cats.',
+            status= 'Out of Stock',
+            price= '19'
+        ),
+        Product(
+            categories= 'Litter',
+            name= 'Zodiac Grapefruit Tofu Cat Litter',
+            description= '2.5kg, Comprised of tofu, this litter is the perfect eco-friendly, sustainable, fast clumping, super absorbent option for indoor cats.',
+            status= 'In Stock',
+            price= '14'
+        )
+    ]
+    db.session.add_all(products)
+    db.session.commit()
+    
     print('Tables Seeded')
