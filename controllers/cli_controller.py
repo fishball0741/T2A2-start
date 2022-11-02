@@ -2,6 +2,8 @@ from flask import Blueprint
 from init import db, bcrypt
 from models.user import User
 from models.product import Product
+from models.cart import Cart
+from datetime import date
 
 
 
@@ -52,7 +54,7 @@ def seed_db():
         ),
         Product(
             categories= 'Toy',
-            name= 'Elevtronic Floppy Fish',
+            name= 'Electronic Floppy Fish',
             description= 'This toy is a great way to encourage your cat or dogs natural urge to play.',
             status= 'Out of stock',
             price= '12'
@@ -74,5 +76,20 @@ def seed_db():
     ]
     db.session.add_all(products)
     db.session.commit()
-    
+
+    carts = [
+        Cart(
+            cart_created_date = date.today(),
+            user = users[1],
+            product = products[0]
+        ),
+        Cart(
+            cart_created_date = date.today(),
+            user = users[0],
+            product = products[1]
+        )
+    ]
+    db.session.add_all(carts)
+    db.session.commit()
+
     print('Tables Seeded')

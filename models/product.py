@@ -19,12 +19,21 @@ class Product(db.Model):
     status = db.Column(db.String, default=VALID_STATUSES[0])
     price = db.Column(db.Integer, nullable=False)
 
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    users = db.relationship('User',back_populates='product')
+
+    cart = db.relationship('Cart',back_populates='product', cascade='all, delete')
+    # #if product deleted, cart can't function
+
 
 
 class ProductSchema(ma.Schema):
+    users = fields.Nested('UserSchema', only=['name'])
+    cart = fields.Nested('CartSchema')
 
 
     class Meta:
-        fields = ('id', 'categories', 'name', 'description', 'status', 'price') 
+        fields = ('id', 'categories', 'name', 'description', 'status', 'price', 'cart', 'users') 
 
         ordered = True
