@@ -24,4 +24,4 @@ class UserSchema(ma.Schema):
 
 
     class Meta:
-        fields = ('id', 'name', 'email', 'password', 'address', 'phone', 'admin', 'cart', 'product')   # know we need password but not it json.
+        fields = ('id', 'name', 'email', 'password', 'address', 'phone', 'admin', 'cart')   # know we need password but not it json.
