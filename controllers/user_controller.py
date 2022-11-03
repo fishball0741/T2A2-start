@@ -14,17 +14,21 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 def get_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt)
+    # return UserSchema(many=True, exclude=['password']).dump(users)
     #trying to set to be only admin can access to see all the users' info.
-    return UserSchema(many=True, exclude=['password']).dump(users)
+    if User.id == 1:
+        return UserSchema(many=True, exclude=['password']).dump(users)
+    else:
+        return {'error': "You do not have authorization."}, 404
 
 
 @user_bp.route('/<int:id>/')
 @jwt_required()
 def one_user(id):
     stmt = db.select(User).filter_by(id=id)  #specify id = id
-    user = db.session.scalar(stmt)  
+    user = db.session.scalar(stmt)
     if user:
-        return UserSchema().dump(user) 
+        return UserSchema().dump(user)
     else:
         return {'error': f"User not found with id {id}."}, 404
 
@@ -36,7 +40,6 @@ def user_register():
             email = request.json['email'],
             password = bcrypt.generate_password_hash(request.json['password']).decode('utf-8'),
             address = request.json['address'],
-
         )
         db.session.add(user)
         db.session.commit()
