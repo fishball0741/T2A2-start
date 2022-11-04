@@ -19,5 +19,5 @@ class CartSchema(ma.Schema):
     product = fields.List(fields.Nested('ProductSchema', only=['name', 'status', 'price']))
     
     class Meta:
-        fields = ('id', 'message', 'date', 'product', 'user')
+        fields = ('id', 'date', 'product')
         ordered = True

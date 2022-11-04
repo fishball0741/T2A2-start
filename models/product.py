@@ -34,6 +34,6 @@ class ProductSchema(ma.Schema):
 
 
     class Meta:
-        fields = ('id', 'categories', 'name', 'description', 'status', 'price', 'cart', 'users') 
+        fields = ('id', 'categories', 'name', 'description', 'status', 'price') 
 
         ordered = True

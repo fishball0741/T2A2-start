@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request
 from init import db, bcrypt
 from datetime import timedelta
 from models.user import User, UserSchema
@@ -9,22 +9,33 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
+
+def authorize():
+    user_id = get_jwt_identity()
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    return user.admin
+
 @user_bp.route('/')
 @jwt_required()
 def get_users():
+    if not authorize():
+        return {'error': "You do not have authorization."}, 401
     stmt = db.select(User)
     users = db.session.scalars(stmt)
-    # return UserSchema(many=True, exclude=['password']).dump(users)
     #trying to set to be only admin can access to see all the users' info.
-    if User.id == 1:
-        return UserSchema(many=True, exclude=['password']).dump(users)
-    else:
-        return {'error': "You do not have authorization."}, 404
+    return UserSchema(many=True, exclude=['password']).dump(users)
+    # if users:
+    #     return UserSchema(many=True, exclude=['password']).dump(users)
+    # else:
+    #     return {'error': "You do not have authorization."}, 404
 
 
 @user_bp.route('/<int:id>/')
 @jwt_required()
 def one_user(id):
+    if not authorize():
+        return {'error': "You do not have authorization."}, 401
     stmt = db.select(User).filter_by(id=id)  #specify id = id
     user = db.session.scalar(stmt)
     if user:
@@ -60,3 +71,4 @@ def user_login():
 
     else:
         return {'error': 'Invalid password or email'}, 401
+
