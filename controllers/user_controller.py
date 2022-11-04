@@ -16,6 +16,15 @@ def authorize():
     user = db.session.scalar(stmt)
     return user.admin
 
+def authorize1():
+    user_id = get_jwt_identity()
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    if not user.id:
+        return {'error': "You do not have authorization."}, 401
+
+
+
 @user_bp.route('/')
 @jwt_required()
 def get_users():
@@ -25,17 +34,13 @@ def get_users():
     users = db.session.scalars(stmt)
     #trying to set to be only admin can access to see all the users' info.
     return UserSchema(many=True, exclude=['password']).dump(users)
-    # if users:
-    #     return UserSchema(many=True, exclude=['password']).dump(users)
-    # else:
-    #     return {'error': "You do not have authorization."}, 404
 
 
 @user_bp.route('/<int:id>/')
 @jwt_required()
 def one_user(id):
-    if not authorize():
-        return {'error': "You do not have authorization."}, 401
+    authorize1()
+# **************** fixing   DONT FORGET, the authorization for user can see himself
     stmt = db.select(User).filter_by(id=id)  #specify id = id
     user = db.session.scalar(stmt)
     if user:
