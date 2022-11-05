@@ -20,8 +20,7 @@ def authorize1():
     user_id = get_jwt_identity()
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
-    if not user.id:
-        return {'error': "You do not have authorization."}, 401
+    return user.id
 
 
 
@@ -39,8 +38,9 @@ def get_users():
 @user_bp.route('/<int:id>/')
 @jwt_required()
 def one_user(id):
-    authorize1()
-# **************** fixing   DONT FORGET, the authorization for user can see himself
+    if not authorize1() == id:
+        return {'error': "You do not have authorization."}, 401
+        
     stmt = db.select(User).filter_by(id=id)  #specify id = id
     user = db.session.scalar(stmt)
     if user:
