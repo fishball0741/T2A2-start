@@ -22,8 +22,9 @@ class Product(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     users = db.relationship('User',back_populates='product')
+    cart = db.relationship('Cart',back_populates='product')
+    add = db.relationship('Add', back_populates='product', cascade='all, delete')
 
-    cart = db.relationship('Cart',back_populates='product', cascade='all, delete')
     # #if product deleted, cart can't function
 
 
