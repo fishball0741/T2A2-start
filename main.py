@@ -4,6 +4,7 @@ from init import db, ma, bcrypt, jwt
 from controllers.prod_controller import product_bp
 from controllers.cli_controller import db_commands
 from controllers.user_controller import user_bp
+from controllers.cart_controller import cart_bp
 from marshmallow.exceptions import ValidationError
 
 
@@ -46,7 +47,7 @@ def create_app():
     app.register_blueprint(product_bp)  #direct the link to bp link
     app.register_blueprint(db_commands)  #direct the link to bp link
     app.register_blueprint(user_bp)
-
+    app.register_blueprint(cart_bp)
 
     # @app.route("/")
     # def hello_world():

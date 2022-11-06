@@ -3,7 +3,7 @@ from init import db, bcrypt
 from models.user import User
 from models.product import Product
 from models.cart import Cart
-from models.add import Add
+# from models.add import Add
 from datetime import date
 
 
@@ -82,26 +82,30 @@ def seed_db():
         Cart(
             cart_created_date = date.today(),
             user = users[1],
+            product = products[3]
         ),
         Cart(
             cart_created_date = date.today(),
-            user = users[0],
+            user = users[1],
+            product = products[0]
         )
     ]
     db.session.add_all(carts)
     db.session.commit()
 
-    adds = [
-        Add(
-            cart = carts[1],
-            product = products[0]
-        ),
-        Add(
-            cart = carts[1],
-            product = products[3]
-        )
-    ]
-    db.session.add_all(adds)
-    db.session.commit()
+    # adds = [
+    #     Add(
+    #         cart = carts[1],
+    #         product = products[0]
+    #     ),
+    #     Add(
+    #         cart = carts[1],
+    #         product = products[3]
+    #     ) 
+    # ]
+    # db.session.add_all(adds)
+    # db.session.commit()
+
+    
     
     print('Tables Seeded')

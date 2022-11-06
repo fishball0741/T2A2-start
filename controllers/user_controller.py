@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from init import db, bcrypt
 from datetime import timedelta
 from models.user import User, UserSchema
@@ -21,9 +21,10 @@ def authorize1():
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
     return user.id
+    
 
 
-
+#only for admin can see all users' info
 @user_bp.route('/')
 @jwt_required()
 def get_users():
@@ -35,6 +36,7 @@ def get_users():
     return UserSchema(many=True, exclude=['password']).dump(users)
 
 
+#only for user who see their own info.
 @user_bp.route('/<int:id>/')
 @jwt_required()
 def one_user(id):

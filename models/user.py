@@ -20,8 +20,18 @@ class User(db.Model):
 
 class UserSchema(ma.Schema):
     product = fields.List(fields.Nested('ProductSchema'))
-    cart = fields.Nested('CartSchema')
+    cart = fields.List(fields.Nested('CartSchema', exclude=['user', 'id']))
 
 
     class Meta:
-        fields = ('id', 'name', 'email', 'password', 'address', 'phone', 'admin', 'cart')   # know we need password but not it json.
+        fields = ('id', 'name', 'email', 'address', 'phone', 'cart')   # know we need password but not it json.
+        ordered = True
+
+class UserSchema1(ma.Schema):
+    product = fields.List(fields.Nested('ProductSchema'))
+    cart = fields.List(fields.Nested('CartSchema', exclude=['user', 'id']))
+
+
+    class Meta:
+        fields = ('name', 'email', 'address', 'phone', 'cart')
+        ordered = True
