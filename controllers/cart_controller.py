@@ -44,21 +44,22 @@ def one_user_carts(email):
 #post for adding stuff to the cart
 @cart_bp.route('/', methods=['POST'])
 @jwt_required()
-def create_cart(id):
-    if not authorize1() == id:
-        return {'error': "You cannot create cart without authorization."}, 401
-    stmt = db.select(Cart).filter_by(id=id)
-    cart = db.session.scalar(stmt)
-    # data = CartSchema().load(request.json)   #load from the schema is apply the validation from the Schema
-    cart = Cart(
-        cart_created_date = date.today(),
-        user_id = get_jwt_identity(),
-
-    )
+def create_cart(user_id):
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    if user:
+        # **********error ****
+        cart = Cart(
+            user_id = get_jwt_identity(),
+            cart = cart,
+            cart_created_date = date.today()
+        )
     #  Add and commit card to db
-    db.session.add(cart)
-    db.session.commit()
-    return CartSchema().dump(cart), 201   #dump = out
+        db.session.add(cart)
+        db.session.commit()
+        return CartSchema().dump(cart), 201   #dump = out
+    else:
+        return {'error': f'User not found with id {id}'}, 404
 
 
 @cart_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])

@@ -22,8 +22,7 @@ class CartSchema(ma.Schema):
 
     
     class Meta:
-        fields = ('id', 'cart_created_date', 'user', 'product')   # no add first.
+        fields = ('user', 'cart_created_date', 'product')   # no add first.
         ordered = True
 
 
-        
