@@ -1,9 +1,8 @@
 from flask import Blueprint, request
 from init import db
 from models.product import Product, ProductSchema
-
 from controllers.user_controller import authorize
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 product_bp = Blueprint('product', __name__, url_prefix='/product')
 

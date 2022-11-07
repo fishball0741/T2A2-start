@@ -40,24 +40,41 @@ def one_user_carts(email):
 
 
 #post for adding stuff to the cart
-@cart_bp.route('/', methods=['POST'])
+@cart_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])
 @jwt_required()
-def create_cart(user_id):
-    stmt = db.select(User).filter_by(id=user_id)
-    user = db.session.scalar(stmt)
-    if user:
+def create_cart(id):
+    if not authorize1() == id:
+        return {'error': "You do not have authorization."}, 401
+
+    stmt = db.select(Product).filter_by(id=id)  #specify id = id
+    cart = db.session.scalar(stmt)
+
+    cart = Product(
+        categories = request.json['categories'],
+        name = request.json['name'],
+        description = request.json.get('description'),
+        status = request.json.get('status'),
+        price = request.json['price'],
+        user_id = get_jwt_identity()
+        # categories = request.json.get('categories') or product.categories,
+        # name = request.json.get('name') or product.name,
+        # description = request.json.get('description') or product.description,
+        # status = request.json.get('status') or product.status,
+        # price = request.json.get('price') or product.price,
+        # user_id = get_jwt_identity()
+    )
         # **********error ****
-        cart = Cart(
-            user_id = get_jwt_identity(),
-            cart = cart,
-            cart_created_date = date.today()
-        )
+        # cart = Cart(
+        #     product = request.json.get('product'),
+        #     cart_created_date = date.today(),
+        #     user_id = get_jwt_identity()
+        # )
+        
+        
     #  Add and commit cart to db
-        db.session.add(cart)
-        db.session.commit()
-        return CartSchema().dump(cart), 201   #dump = out
-    else:
-        return {'error': f'User not found with id {id}'}, 404
+    db.session.add(cart)
+    db.session.commit()
+    return CartSchema().dump(cart), 201   #dump = out
 
 
 @cart_bp.route('/<int:id>/', methods=['PUT', 'PATCH'])

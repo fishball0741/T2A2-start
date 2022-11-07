@@ -1,7 +1,7 @@
-from unicodedata import category
+# from unicodedata import category
 from wsgiref import validate
 from init import db, ma    #< cannot do, because db is in the def
-from marshmallow import fields, validates
+from marshmallow import fields
 from marshmallow.validate import Length, OneOf, And, Regexp
 from marshmallow.exceptions import ValidationError
 
