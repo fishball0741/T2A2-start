@@ -92,20 +92,5 @@ def seed_db():
     ]
     db.session.add_all(carts)
     db.session.commit()
-
-    # adds = [
-    #     Add(
-    #         cart = carts[1],
-    #         product = products[0]
-    #     ),
-    #     Add(
-    #         cart = carts[1],
-    #         product = products[3]
-    #     ) 
-    # ]
-    # db.session.add_all(adds)
-    # db.session.commit()
-
-    
     
     print('Tables Seeded')

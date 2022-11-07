@@ -4,7 +4,6 @@ from datetime import date
 from models.product import Product, ProductSchema
 from models.user import User, UserSchema1
 from models.cart import Cart, CartSchema
-# from models.add import Add, AddSchema
 from controllers.user_controller import authorize1, authorize
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -27,12 +26,11 @@ def get_carts():
     #trying to set to be only admin can access to see all the users' info.
     return CartSchema(many=True).dump(carts)
 
+
+
 @cart_bp.route('/<string:email>/')
 @jwt_required()
 def one_user_carts(email):
-    # if not authorize2() == email:
-    #     return {'error': "You do not have authorization."}, 401
-        
     stmt = db.select(User).filter_by(email=email)
     cart = db.session.scalar(stmt)
     if cart:
@@ -54,7 +52,7 @@ def create_cart(user_id):
             cart = cart,
             cart_created_date = date.today()
         )
-    #  Add and commit card to db
+    #  Add and commit cart to db
         db.session.add(cart)
         db.session.commit()
         return CartSchema().dump(cart), 201   #dump = out
@@ -68,17 +66,3 @@ def update_cart(id):
     if not authorize1() == id:
         return {'error': "You do not have authorization."}, 401
     
-
-
-
-@cart_bp.route('/<int:id>/')
-@jwt_required()
-def one_cart(id):
-    if not authorize1() == id:
-        return {'error': "You do not have authorization."}, 401
-    stmt = db.select(Cart)
-    cart = db.session.scalar(stmt)
-    if cart:
-        return CartSchema().dump(cart)
-    else:
-        return {'error': f"Cart not found with id {id}."}, 404

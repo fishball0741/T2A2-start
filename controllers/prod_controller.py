@@ -65,6 +65,7 @@ def update_one_product(id):
     else:
         return {'error': f"Product not found with id {id}."}, 404
 
+
 #only admin can do the post (post new product)
 @product_bp.route('/', methods=['POST'])   
 @jwt_required()
@@ -80,7 +81,7 @@ def create_product():
         status = data['status'],
         price = data['price'],
     )
-    #  Add and commit card to db
+    #  Add and commit cart to db
     db.session.add(product)
     db.session.commit()
     return ProductSchema().dump(product), 201   #dump = out

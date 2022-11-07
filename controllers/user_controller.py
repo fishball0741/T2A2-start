@@ -50,6 +50,7 @@ def one_user(id):
     else:
         return {'error': f"User not found with id {id}."}, 404
 
+#for user to register
 @user_bp.route('/register/', methods=['POST'])
 def user_register():
     try:
@@ -67,6 +68,8 @@ def user_register():
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
 
+
+#for user to login
 @user_bp.route('/login/', methods=['POST'])
 def user_login():
     stmt = db.select(User).filter_by(email=request.json['email'])

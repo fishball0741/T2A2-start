@@ -33,5 +33,5 @@ class UserSchema1(ma.Schema):
 
 
     class Meta:
-        fields = ('name', 'email', 'address', 'phone', 'cart')
+        fields = ('id', 'name', 'email', 'address', 'phone', 'cart')
         ordered = True
