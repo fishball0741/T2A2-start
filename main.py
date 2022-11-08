@@ -49,8 +49,4 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(cart_bp)
 
-    # @app.route("/")
-    # def hello_world():
-    #     return "<p>Hello, World!</p>"
-
     return app

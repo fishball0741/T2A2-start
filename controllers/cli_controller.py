@@ -3,7 +3,6 @@ from init import db, bcrypt
 from models.user import User
 from models.product import Product
 from models.cart import Cart
-# from models.add import Add
 from datetime import date
 
 

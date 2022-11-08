@@ -2,9 +2,6 @@
 from wsgiref import validate
 from init import db, ma    #< cannot do, because db is in the def
 from marshmallow import fields
-from marshmallow.validate import Length, OneOf, And, Regexp
-from marshmallow.exceptions import ValidationError
-
 
 VALID_CATEGORIES = ('Food', 'Toy', 'Litter')
 VALID_STATUSES = ('In Stock', 'Out of Stock')
