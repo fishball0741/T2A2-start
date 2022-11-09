@@ -76,8 +76,8 @@ def create_product():
     product = Product(
         categories = data['categories'],
         name = data['name'],
-        description = data['description'],
-        status = data['status'],
+        description = data.get('description'),
+        status = data.get('status'),
         price = data['price'],
     )
     #  Add and commit cart to db

@@ -33,7 +33,7 @@ def get_users():
     stmt = db.select(User)
     users = db.session.scalars(stmt)
     #trying to set to be only admin can access to see all the users' info.
-    return UserSchema(many=True, exclude=['password']).dump(users)
+    return UserSchema(many=True).dump(users)
 
 
 #only for user who see their own info.
@@ -63,7 +63,7 @@ def user_register():
         db.session.add(user)
         db.session.commit()
 
-        return UserSchema(exclude=['password']).dump(user), 201
+        return UserSchema().dump(user), 201
 
     except IntegrityError:
         return {'error': 'Email address already in use'}, 409
@@ -77,7 +77,7 @@ def user_login():
 
     if user and bcrypt.check_password_hash(user.password, request.json['password']):
         token = create_access_token(identity=str(user.id), expires_delta=timedelta(days=7))
-        return {'email': user.email, 'token': token, 'admin': user.admin}
+        return {'email': user.email, 'token': token, 'id': user.id, 'admin': user.admin}
 
     else:
         return {'error': 'Invalid password or email'}, 401

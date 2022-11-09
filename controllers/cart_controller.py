@@ -25,6 +25,8 @@ def get_carts():
 @cart_bp.route('/<string:email>/')
 @jwt_required()
 def one_user_carts(email):
+    if not authorize1():
+        return {'error': "You do not have authorization."}, 401
     stmt = db.select(User).filter_by(email=email)
     cart = db.session.scalar(stmt)
     if cart:
@@ -34,9 +36,9 @@ def one_user_carts(email):
 
 
 #post for adding product to cart
-@cart_bp.route('/<int:id>/', methods=['POST'])
+@cart_bp.route('/', methods=['POST'])
 @jwt_required()
-def create_cart(id):
+def create_cart():
     data = ProductSchema().load(request.json)
 
     cart = Cart(
